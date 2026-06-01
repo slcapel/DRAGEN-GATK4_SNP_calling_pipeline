@@ -60,7 +60,7 @@ then
         bcftools filter --threads 16 -m + -s "(2)MISSING0.2" -e 'F_MISSING > 0.2' -O z | \
         bcftools filter --threads 16 -m + -s "(3)INVARIABLE" -e 'AC==0 || AC==AN' -O z | \
         bcftools filter --threads 16 -m + -s "(4)MINMAF${minmaf}" -e "AF<${minmaf} || AF>${minmafi}" -O z | \
-        bcftools filter --threads 16 -m + -s "(5)MINMQ166.67" -e "MQ < 166.67" -O z | \
+        bcftools filter --threads 16 -m + -s "(5)MINMQ${minMQ}" -e "MQ < ${minMQ}" -O z | \
         bcftools filter --threads 16 -m + -s "(6)MINQD2" -e "QD < 2" -O z | \
         bcftools filter --threads 16 -m + -s "(7)MAXSOR3" -e "SOR > 3" -O z | \
         bcftools filter --threads 16 -m + -s "(8)MASK" --mask-file $8 -O z -o $1/gatk.snp.filtered_soft.vcf.gz
@@ -72,7 +72,7 @@ else
         bcftools filter --threads 16 -m + -s "(2)MISSING0.2" -e 'F_MISSING > 0.2' -O z | \
         bcftools filter --threads 16 -m + -s "(3)INVARIABLE" -e 'AC==0 || AC==AN' -O z | \
         bcftools filter --threads 16 -m + -s "(4)MINMAF${minmaf}" -e "AF<${minmaf} || AF>${minmafi}" -O z | \
-        bcftools filter --threads 16 -m + -s "(5)MINMQ166.67" -e "MQ < 166.67" -O z | \
+        bcftools filter --threads 16 -m + -s "(5)MINMQ${minMQ}" -e "MQ < ${minMQ}" -O z | \
         bcftools filter --threads 16 -m + -s "(6)MINQD2" -e "QD < 2" -O z | \
         bcftools filter --threads 16 -m + -s "(7)MAXSOR3" -e "SOR > 3" -O z -o $1/gatk.snp.filtered_soft.vcf.gz
 fi
