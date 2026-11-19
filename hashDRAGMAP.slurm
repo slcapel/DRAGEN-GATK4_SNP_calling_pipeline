@@ -1,27 +1,26 @@
 #!/bin/bash
 
-#SBATCH --job-name=drgmp_hash
-#SBATCH --ntasks-per-node=32
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=4
 
-start=`date +%s`
 echo $HOSTNAME
+export OMP_NUM_THREADS=$SLURM_JOB_CPUS_PER_NODE
 
-dc=$(cat $1 | awk '{print $1}')
-ec=$(cat $1 | awk '{print $2}')
-
-source ${dc}/conda.sh
-conda activate ${ec}
 ref=$2
 refdir=$(echo ${ref%/*})
 
-echo "Creating hash tables for DRAGMAP..."
-dragen-os \
-    --build-hash-table true \
-    --ht-reference $2 \
-    --output-directory $refdir \
-    --ht-num-threads 32
+module load conda
+conda activate $1
+
+if [[ ! -f ${refdir}/hash_table.cmp ]]
+then
+    echo "Creating hash tables for DRAGMAP..."
+    dragen-os \
+        --build-hash-table true \
+        --ht-reference $2 \
+        --output-directory $refdir \
+        --ht-num-threads 4
+fi
 
 (exit) && echo success
-end=`date +%s`
-runtime=$((end-start))
-echo "RUNTIME: $runtime"
